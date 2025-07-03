@@ -15,16 +15,14 @@ class AuthController {
   registerHandler = async (req: Request, res: Response, next: NextFunction) => {
     const user: TUser = req.body;
     try {
-      if (!user.password || user.password.length < 6) {
-        throw new BadRequestError("Password must be at least 6 characters");
-        return;
+      const existingUserName = await User.findOne({ userName: user.userName });
+      if (existingUserName) {
+        throw new BadRequestError("Username already in use");
       }
-      const existingUser = await User.findOne({ email: user.email });
-      if (existingUser) {
+      const existingEmail = await User.findOne({ email: user.email });
+      if (existingEmail) {
         throw new BadRequestError("Email already in use");
-        return;
       }
-
       const saltRounds = parseInt(process.env.SALT_WORK_FACTOR || "10");
       const salt = await bcrypt.genSalt(saltRounds);
       const hash = await bcrypt.hash(user.password, salt);

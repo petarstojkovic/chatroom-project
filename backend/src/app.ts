@@ -16,6 +16,7 @@ app.use(express.json());
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use(globalErrorHandler);
+
 app.listen(port, host, () => {
   console.log(`server listening on port 5000`);
   connectDB();

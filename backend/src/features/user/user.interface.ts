@@ -1,4 +1,4 @@
-interface IUSer {
+interface IUser {
   email: string;
   userName: string;
   password: string;
@@ -7,4 +7,4 @@ interface IUSer {
   updatedAt: Date;
 }
 
-export type TUser = IUSer;
+export type TUser = IUser;
