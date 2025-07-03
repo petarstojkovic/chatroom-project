@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { healthRouter } from "./features/health/healthcheck";
 import { authRouter } from "./features/auth/auth.router";
 import { connectDB } from "../config/lib/connect.db";
+import { globalErrorHandler } from "./middleware/error.middleware";
 dotenv.config({ path: "./src/config/.env" });
 
 const app = express();
@@ -14,7 +15,7 @@ app.use(express.json());
 
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
-
+app.use(globalErrorHandler);
 app.listen(port, host, () => {
   console.log(`server listening on port 5000`);
   connectDB();

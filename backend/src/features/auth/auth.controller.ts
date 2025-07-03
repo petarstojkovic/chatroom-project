@@ -1,18 +1,28 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import userService from "../user/user.service";
 import { TUser } from "../user/user.interface";
-import { BadRequestError } from "../../middleware/error.middleware";
+import {
+  BadRequestError,
+  ServerError,
+} from "../../middleware/error.middleware";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import User from "../user/user.model";
+import { generateToken } from "../../utils/jwt.utils";
 dotenv.config({ path: "./config/.env" });
 
 class AuthController {
-  registerHandler = async (req: Request, res: Response) => {
-    const user = (await userService.createUser(req.body)) as TUser;
+  registerHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const user: TUser = req.body;
     try {
-      if (user.password.length < 6) {
+      if (!user.password || user.password.length < 6) {
         throw new BadRequestError("Password must be at least 6 characters");
+        return;
+      }
+      const existingUser = await User.findOne({ email: user.email });
+      if (existingUser) {
+        throw new BadRequestError("Email already in use");
+        return;
       }
 
       const saltRounds = parseInt(process.env.SALT_WORK_FACTOR || "10");
@@ -24,13 +34,24 @@ class AuthController {
         email: user.email,
         password: hash,
       });
+      await newUser.save();
 
       if (newUser) {
-        // jwt token
+        generateToken({ _id: newUser._id.toString() }, res);
+        await newUser.save();
+
+        res.status(201).json({
+          _id: newUser._id,
+          userName: newUser.userName,
+          email: newUser.email,
+          profilePic: newUser.profilePic,
+        });
       } else {
         throw new BadRequestError("Invalid user data");
       }
-    } catch (error) {}
+    } catch (err: any) {
+      next(err);
+    }
   };
 
   loginHandler = async (req: Request, res: Response) => {
