@@ -3,6 +3,7 @@ import { body, ValidationChain, validationResult } from "express-validator";
 import { BadRequestError } from "../../middleware/error.middleware";
 
 export const loginValidator = [
+  body("*").notEmpty().withMessage("All fields are required"),
   body("email").isEmail().withMessage("Valid email is required"),
   body("password")
     .isLength({ min: 6 })
@@ -10,6 +11,7 @@ export const loginValidator = [
 ];
 
 export const registerValidator = [
+  body("*").notEmpty().withMessage("All fields are required"),
   body("userName").notEmpty().withMessage("Username is required"),
   body("email").isEmail().withMessage("Valid email is required"),
   body("password")
