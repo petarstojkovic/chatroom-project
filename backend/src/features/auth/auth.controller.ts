@@ -47,17 +47,50 @@ class AuthController {
       } else {
         throw new BadRequestError("Invalid user data");
       }
-    } catch (err: any) {
+    } catch (err) {
       next(err);
     }
   };
 
-  loginHandler = async (req: Request, res: Response) => {
-    res.sendStatus(200);
+  loginHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password }: Pick<TUser, "email" | "password"> = req.body;
+    try {
+      const existingUser = await User.findOne({ email });
+      if (!existingUser) {
+        throw new BadRequestError("Invalid credentials");
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        existingUser.password
+      );
+      if (!isPasswordCorrect) {
+        throw new BadRequestError("Invalid credentials");
+      }
+      generateToken({ _id: existingUser._id.toString() }, res);
+
+      res.status(200).json({
+        _id: existingUser._id,
+        email: existingUser.email,
+        userName: existingUser.userName,
+        profilePic: existingUser.profilePic,
+      });
+    } catch (err) {
+      next(err);
+    }
   };
 
-  logoutHandler = async (req: Request, res: Response) => {
-    res.sendStatus(200);
+  logoutHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV !== "development",
+      });
+      res.status(200).json({ message: "Logged out successdully" });
+    } catch (err) {
+      next(err);
+    }
   };
 }
 
