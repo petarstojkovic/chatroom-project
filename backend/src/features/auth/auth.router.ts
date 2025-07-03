@@ -5,6 +5,7 @@ import {
   registerValidator,
   validateRequest,
 } from "./auth.validator";
+import { authMiddleware } from "../../middleware/auth.middleware";
 
 export const authRouter = Router();
 
@@ -21,3 +22,5 @@ authRouter.post(
 );
 
 authRouter.delete("/logout", authController.logoutHandler);
+
+authRouter.get("/check", authMiddleware, authController.checkAuth);

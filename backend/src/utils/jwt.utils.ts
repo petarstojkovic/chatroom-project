@@ -3,9 +3,11 @@ import dotenv from "dotenv";
 import { Response } from "express";
 dotenv.config({ path: "./config/.env" });
 
-export interface IToken {
+interface IToken extends jwt.JwtPayload {
   _id: string;
 }
+
+export type TToken = IToken;
 
 export const generateToken = (payload: IToken, res: Response) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {

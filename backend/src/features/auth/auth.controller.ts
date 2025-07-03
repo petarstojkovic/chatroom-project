@@ -1,11 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import userService from "../user/user.service";
 import { TUser } from "../user/user.interface";
-import {
-  BadRequestError,
-  ServerError,
-} from "../../middleware/error.middleware";
-import bcrypt from "bcryptjs";
+import { BadRequestError } from "../../middleware/error.middleware";
+import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import User from "../user/user.model";
 import { generateToken } from "../../utils/jwt.utils";
@@ -88,6 +84,13 @@ class AuthController {
         secure: process.env.NODE_ENV !== "development",
       });
       res.status(200).json({ message: "Logged out successdully" });
+    } catch (err) {
+      next(err);
+    }
+  };
+  checkAuth = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.status(200).json(req.user);
     } catch (err) {
       next(err);
     }
