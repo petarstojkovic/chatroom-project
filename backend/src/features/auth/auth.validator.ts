@@ -1,6 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { body, ValidationChain, validationResult } from "express-validator";
-import { BadRequestError } from "../../middleware/error.middleware";
 
 export const loginValidator = [
   body("*").notEmpty().withMessage("All fields are required"),

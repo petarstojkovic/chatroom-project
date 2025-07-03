@@ -1,6 +1,10 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import authController from "./auth.controller";
-import { registerValidator, validateRequest } from "./auth.validator";
+import {
+  loginValidator,
+  registerValidator,
+  validateRequest,
+} from "./auth.validator";
 
 export const authRouter = Router();
 
@@ -10,6 +14,10 @@ authRouter.post(
   authController.registerHandler
 );
 
-authRouter.post("/login", authController.loginHandler);
+authRouter.post(
+  "/login",
+  validateRequest(...loginValidator),
+  authController.loginHandler
+);
 
 authRouter.delete("/logout", authController.logoutHandler);
