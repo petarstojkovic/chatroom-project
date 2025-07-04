@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { TUser } from "../user/user.interface";
+import { TUserDocument } from "../user/user.interface";
 import { BadRequestError } from "../../middleware/error.middleware";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -9,7 +9,7 @@ dotenv.config({ path: "./config/.env" });
 
 class AuthController {
   registerHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const user: TUser = req.body;
+    const user: TUserDocument = req.body;
     try {
       const existingUserName = await User.findOne({ userName: user.userName });
       if (existingUserName) {
@@ -49,7 +49,8 @@ class AuthController {
   };
 
   loginHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password }: Pick<TUser, "email" | "password"> = req.body;
+    const { email, password }: Pick<TUserDocument, "email" | "password"> =
+      req.body;
     try {
       const existingUser = await User.findOne({ email });
       if (!existingUser) {

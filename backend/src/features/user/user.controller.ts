@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { TUser } from "./user.interface";
+import { TUserDocument } from "./user.interface";
 import { NotFoundError } from "../../middleware/error.middleware";
 import cloudinary from "../../../config/lib/cloudinary";
 import User from "./user.model";
@@ -7,7 +7,7 @@ import User from "./user.model";
 class UserController {
   updateProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { profilePic }: Pick<TUser, "profilePic"> = req.body;
+      const { profilePic }: Pick<TUserDocument, "profilePic"> = req.body;
       const _id = req.user._id;
 
       if (!profilePic) {
