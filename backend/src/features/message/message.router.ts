@@ -7,3 +7,4 @@ messageRouter.use(authMiddleware);
 
 messageRouter.get("/users", messageController.getUsersSidebar);
 messageRouter.get("/:id", messageController.getMessages);
+messageRouter.post("/send/:id", messageController.sendMessage);
