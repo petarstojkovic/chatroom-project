@@ -7,6 +7,7 @@ import { connectDB } from "../config/lib/connect.db";
 import { globalErrorHandler } from "./middleware/error.middleware";
 import { userRouter } from "./features/user/user.router";
 import cookieParser from "cookie-parser";
+import { messageRouter } from "./features/message/message.router";
 
 dotenv.config({ path: "./src/config/.env" });
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/message", messageRouter);
 app.use(globalErrorHandler);
 
 app.listen(port, host, () => {
