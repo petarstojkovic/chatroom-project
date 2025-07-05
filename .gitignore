@@ -12,11 +12,6 @@ dist
 dist-ssr
 *.local
 .env
-yarn_lock
-.pnp.cjs
-.pnp.loader.mjs
-.yarn
-.yarnrc.yml
 
 # Editor directories and files
 .vscode/*
