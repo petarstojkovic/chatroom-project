@@ -1,8 +1,10 @@
-import { TUser } from "./user.interface";
+import { TUserDocument } from "./user.interface";
 import User from "./user.model";
 
 class UserService {
-  createUser = async (input: Omit<TUser, "createdAt" | "updatedAt">) => {
+  createUser = async (
+    input: Omit<TUserDocument, "createdAt" | "updatedAt">
+  ) => {
     try {
       return await User.create(input);
     } catch (err: any) {

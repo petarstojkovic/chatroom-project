@@ -8,6 +8,7 @@ import { globalErrorHandler } from "./middleware/error.middleware";
 import { userRouter } from "./features/user/user.router";
 import cookieParser from "cookie-parser";
 import { messageRouter } from "./features/message/message.router";
+import { corsMiddleware } from "./middleware/cors.middleware";
 
 dotenv.config({ path: "./src/config/.env" });
 
@@ -17,6 +18,7 @@ const port = parseInt(process.env.PORT || "5000");
 const host = process.env.HOST || "localhost";
 
 app.use(express.json());
+app.use(corsMiddleware);
 app.use(cookieParser());
 
 app.use("/api/health", healthRouter);
