@@ -3,6 +3,7 @@ import type { TUserShort } from "../features/user/user.interface";
 import { useAuthStore } from "../features/auth/store/useAuthStore";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Rocket, User } from "lucide-react";
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<TUserShort>({

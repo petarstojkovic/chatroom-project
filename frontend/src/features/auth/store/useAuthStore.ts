@@ -3,17 +3,19 @@ import { axiosInstance } from "../../../lib/axios";
 import type { TAuthState } from "./auth.state";
 import toast from "react-hot-toast";
 import { showErrorToast } from "../../../middleware/error.middleware";
+
 export const useAuthStore = create<TAuthState>((set) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
+
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
-    } catch (err) {
+    } catch (err: any) {
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });

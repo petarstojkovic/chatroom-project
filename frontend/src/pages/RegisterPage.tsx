@@ -12,7 +12,6 @@ import {
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-// import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
