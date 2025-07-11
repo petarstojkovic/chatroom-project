@@ -49,10 +49,10 @@ class AuthController {
   };
 
   loginHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password }: Pick<TUserDocument, "email" | "password"> =
+    const { userName, password }: Pick<TUserDocument, "userName" | "password"> =
       req.body;
     try {
-      const existingUser = await User.findOne({ email });
+      const existingUser = await User.findOne({ userName });
       if (!existingUser) {
         throw new BadRequestError("Invalid credentials");
       }
@@ -84,7 +84,7 @@ class AuthController {
         sameSite: "strict",
         secure: process.env.NODE_ENV !== "development",
       });
-      res.status(200).json({ message: "Logged out successdully" });
+      res.status(200).json({ message: "Logged out successfully" });
     } catch (err) {
       next(err);
     }

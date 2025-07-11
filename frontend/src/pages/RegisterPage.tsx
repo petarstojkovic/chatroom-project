@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { TUser } from "../features/user/user.interface";
+import type { TUserFull } from "../features/user/user.interface";
 import { useAuthStore } from "../features/auth/store/useAuthStore";
 import {
   Eye,
@@ -8,37 +8,26 @@ import {
   Lock,
   LockKeyhole,
   Mail,
-  MessageSquare,
+  Rocket,
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState<TUser>({
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState<TUserFull>({
     userName: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const { signUp, isSigningUp } = useAuthStore();
+  const { register: signUp, isSigningUp } = useAuthStore();
 
-  const validateForm = () => {
-    if (!formData.userName.trim()) return toast.error("Username is required");
-    if (!formData.email.trim()) return toast.error("Email is required");
-    if (!/\S+@\S+\.\S+/.test(formData.email))
-      return toast.error("Invalid email format");
-    if (!formData.password) return toast.error("Password is required");
-    if (formData.password.length < 6)
-      return toast.error("Password must be at least 6 characters");
-
-    return true;
-  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const success = validateForm();
-    if (success === true) signUp(formData);
+    signUp(formData);
   };
 
   return (
@@ -49,11 +38,14 @@ const RegisterPage = () => {
           <div className="text-center mb-8">
             <div className="flex flex-col items-center gap-2 group">
               <div className="size-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <MessageSquare className="size-6 text-primary" />
+                <Rocket className="size-6 text-primary" />
               </div>
               <h1 className="text-2xl font-bold mt-2">Create an Account</h1>
+              <p className="text-base-content/60">Start Fresh</p>
             </div>
           </div>
+          {/* Form */}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="form-control">
               <label className="label">
@@ -132,7 +124,7 @@ const RegisterPage = () => {
               </label>
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showConfirmPassword ? "text" : "password"}
                   className={`input input-bordered w-full pr-10`}
                   placeholder="confirm password"
                   value={formData.confirmPassword}
@@ -146,9 +138,9 @@ const RegisterPage = () => {
                 <button
                   type="button"
                   className=" absolute inset-y-0 right-0 pr-3 flex items-center z-10"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showPassword ? (
+                  {showConfirmPassword ? (
                     <EyeOff className="size-5 text-base-content/40" />
                   ) : (
                     <Eye className="size-5 text-base-content/40" />

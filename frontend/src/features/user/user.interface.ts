@@ -5,4 +5,5 @@ interface IUser {
   confirmPassword: string;
 }
 
-export type TUser = IUser;
+export type TUserFull = IUser;
+export type TUserShort = Omit<IUser, "email" | "confirmPassword">;
