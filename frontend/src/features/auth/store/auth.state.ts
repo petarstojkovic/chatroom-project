@@ -1,7 +1,11 @@
-import type { TUserFull, TUserShort } from "../../user/user.interface";
+import type {
+  TUpdateProfile,
+  TUserFull,
+  TUserShort,
+} from "../../user/user.interface";
 
 interface IAuthState {
-  authUser: null;
+  authUser: TUserFull | null;
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isUpdatingProfile: boolean;
@@ -10,6 +14,7 @@ interface IAuthState {
   register: (data: TUserFull) => Promise<void>;
   login: (data: TUserShort) => Promise<void>;
   logout: () => Promise<void>;
+  updateProfile: (data: TUpdateProfile) => Promise<void>;
 }
 
 export type TAuthState = IAuthState;

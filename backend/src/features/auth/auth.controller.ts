@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import User from "../user/user.model";
 import { generateToken } from "../../utils/jwt.utils";
+import cloudinary from "../../../config/lib/cloudinary";
 dotenv.config({ path: "./config/.env" });
 
 class AuthController {
@@ -85,6 +86,27 @@ class AuthController {
         secure: process.env.NODE_ENV !== "development",
       });
       res.status(200).json({ message: "Logged out successfully" });
+    } catch (err) {
+      next(err);
+    }
+  };
+  updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { profilePic } = req.body;
+      const userId = req.user._id;
+
+      if (!profilePic) {
+        res.status(400).json({ message: "Profile pic is required" });
+      }
+
+      const uploadResponse = await cloudinary.uploader.upload(profilePic);
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePic: uploadResponse.secure_url },
+        { new: true }
+      );
+
+      res.status(200).json(updatedUser);
     } catch (err) {
       next(err);
     }

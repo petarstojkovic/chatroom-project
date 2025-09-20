@@ -23,4 +23,6 @@ authRouter.post(
 
 authRouter.delete("/logout", authController.logoutHandler);
 
+authRouter.put("/update-profile", authMiddleware, authController.updateProfile);
+
 authRouter.get("/check", authMiddleware, authController.checkAuth);

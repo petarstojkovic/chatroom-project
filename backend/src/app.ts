@@ -17,7 +17,9 @@ const app = express();
 const port = parseInt(process.env.PORT || "5000");
 const host = process.env.HOST || "localhost";
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
 app.use(corsMiddleware);
 app.use(cookieParser());
 
