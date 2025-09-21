@@ -22,7 +22,7 @@ const App = () => {
       </div>
     );
   }
-  // test
+
   return (
     <div>
       <Navbar />
