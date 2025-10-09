@@ -1,10 +1,6 @@
 import { create } from "zustand";
 import { axiosInstance } from "../../../lib/axios";
-<<<<<<< HEAD
-import type { TAuthState } from "./auth.state";
-=======
 import type { TAuthState } from "../auth.state";
->>>>>>> cd68ea3 (chat)
 import toast from "react-hot-toast";
 import { showErrorToast } from "../../../middleware/error.middleware";
 
@@ -19,12 +15,8 @@ export const useAuthStore = create<TAuthState>((set) => ({
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
-<<<<<<< HEAD
-    } catch (err: any) {
-=======
     } catch (err) {
       showErrorToast(err, "Something Went Wrong");
->>>>>>> cd68ea3 (chat)
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
